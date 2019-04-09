@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import '@/assets/styles/index.scss'
 import SvgIcon from '@/components/SvgIcon'
 
 // register globally

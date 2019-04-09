@@ -10,7 +10,7 @@
           class="avatar"
           alt=""
         > -->
-        <span class="title">APP管理平台</span>
+        <span class="title">自动部署平台</span>
       </el-col>
       <div class="userinfo">
         <img

@@ -54,7 +54,7 @@ export default {
   }
 </style>
 <style rel="stylesheet/scss" lang="scss" scoped>
-@import "~@/assets/css/mixin.scss";
+@import "~@/assets/styles/mixin.scss";
 .app-wrapper {
   @include clearfix;
   position: relative;
@@ -66,7 +66,7 @@ export default {
     top: 0;
   }
 }
-#app {
+#__nuxt {
   .sidebar-container {
     top: 60px;
   }
