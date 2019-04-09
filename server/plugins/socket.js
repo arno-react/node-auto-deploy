@@ -30,7 +30,7 @@ module.exports = {
             }
           }
         }
-        allSend('deployList', updateLog)
+        io.sockets.emit('deployList', updateLog)
       });
       ws.on('disconnect', async function () {
         console.log('disconnect', ws.id)
@@ -43,7 +43,7 @@ module.exports = {
           delete updateLog[id]
           delete WsOrId[ws.id]
           delete IdOrWs[id]
-          allSend('deployList', updateLog)
+          io.sockets.emit('deployList', updateLog)
         }
       })
     })

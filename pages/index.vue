@@ -1,96 +1,109 @@
 <template>
     <section class="container " :class="{'task': deployList && Object.keys(deployList).length}">
         <div class="star-task" v-show="deployList && Object.keys(deployList).length">
-            <h3>启动中的任务</h3>
-            <div class="itme" v-for="(item ,key) in deployList" :key="key">
-                任务：<span>{{item.title}}</span><span>#{{item.num}}</span>
-                <div role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
-                     class="el-progress el-progress--line is-exception">
-                    <div class="el-progress-bar">
-                        <div class="el-progress-bar__outer" style="height: 6px;">
-                            <div class="el-progress-bar__inner progress" style="width: 50%;"><!----></div>
-                        </div>
-                    </div>
-                    <div class="el-progress__text" style="font-size: 14.4px;" @click="stopTask(key)"><i class="el-icon-circle-close"></i></div>
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span>启动中的任务</span>
                 </div>
-            </div>
+                <div class="itme" v-for="(item ,key) in deployList" :key="key">
+                    任务：<span>{{item.title}}</span><span>#{{item.num}}</span>
+                    <div role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
+                         class="el-progress el-progress--line is-exception">
+                        <div class="el-progress-bar">
+                            <div class="el-progress-bar__outer" style="height: 6px;">
+                                <div class="el-progress-bar__inner progress" style="width: 50%;"><!----></div>
+                            </div>
+                        </div>
+                        <div class="el-progress__text" style="font-size: 14.4px;" @click="stopTask(key)"><i
+                                class="el-icon-circle-close"></i></div>
+                    </div>
+                </div>
+            </el-card>
         </div>
         <div class="task-list">
-            <el-table
-                    :data="taskList"
-                    style="width: 100%"
-                    max-height="250">
-                <el-table-column
-                        fixed
-                        prop="title"
-                        label="标题"
-                        width="150">
-                </el-table-column>
-                <el-table-column
-                        prop="des"
-                        label="描述"
-                        width="120">
-                </el-table-column>
-                <el-table-column
-                        prop="store_url"
-                        label="仓库地址"
-                        width="120">
-                </el-table-column>
-                <el-table-column
-                        prop="store_type"
-                        label="仓库类型"
-                        width="120">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.store_type === 0 ? 'git' : 'svn'}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                        prop="branch"
-                        label="仓库分支"
-                        width="120">
-                    <template slot-scope="scope">
-                        <el-tag size="medium">{{ scope.row.branch }}</el-tag>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                        prop="workspace"
-                        label="任务工作目录"
-                        width="300">
-                </el-table-column>
-                <el-table-column
-                        prop="status"
-                        label="任务状态"
-                        width="120">
-                    <template slot-scope="scope">
-                        <span>{{scope.row.status === 0 ? '没有执行' : '执行中'}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                        fixed="right"
-                        label="操作"
-                        width="120">
-                    <template slot-scope="scope">
-                        <el-button
-                                @click.native.prevent="delTask(scope.row.id)"
-                                type="text"
-                                size="small">
-                            移除
-                        </el-button>
-                        <el-button
-                                @click.native.prevent="editorTask(scope.row.id)"
-                                type="text"
-                                size="small">
-                            编辑
-                        </el-button>
-                        <el-button
-                                @click.native.prevent="startTask(scope.row.id)"
-                                type="text"
-                                size="small">
-                            执行任务
-                        </el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span>任务列表</span>
+                    <el-button style="float: right; padding: 3px 0" type="text" @click.native.prevent="addTask()"> 新增
+                    </el-button>
+                </div>
+
+                <el-table
+                        :data="taskList"
+                        style="width: 100%"
+                        max-height="250">
+                    <el-table-column
+                            fixed
+                            prop="title"
+                            label="标题"
+                            width="150">
+                    </el-table-column>
+                    <el-table-column
+                            prop="des"
+                            label="描述"
+                            width="120">
+                    </el-table-column>
+                    <el-table-column
+                            prop="store_url"
+                            label="仓库地址"
+                            width="120">
+                    </el-table-column>
+                    <el-table-column
+                            prop="store_type"
+                            label="仓库类型"
+                            width="120">
+                        <template slot-scope="scope">
+                            <span>{{scope.row.store_type === 0 ? 'git' : 'svn'}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="branch"
+                            label="仓库分支"
+                            width="120">
+                        <template slot-scope="scope">
+                            <el-tag size="medium">{{ scope.row.branch }}</el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="workspace"
+                            label="任务工作目录"
+                            width="300">
+                    </el-table-column>
+                    <el-table-column
+                            prop="status"
+                            label="任务状态"
+                            width="120">
+                        <template slot-scope="scope">
+                            <span>{{scope.row.status === 0 ? '没有执行' : '执行中'}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            fixed="right"
+                            label="操作"
+                            width="120">
+                        <template slot-scope="scope">
+                            <el-button
+                                    @click.native.prevent="delTask(scope.row.id)"
+                                    type="text"
+                                    size="small">
+                                移除
+                            </el-button>
+                            <el-button
+                                    @click.native.prevent="editorTask(scope.row.id)"
+                                    type="text"
+                                    size="small">
+                                编辑
+                            </el-button>
+                            <el-button
+                                    @click.native.prevent="startTask(scope.row.id)"
+                                    type="text"
+                                    size="small">
+                                执行任务
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-card>
         </div>
     </section>
 </template>
@@ -141,7 +154,9 @@
           })
         })
       },
-      editorTask() {
+      editorTask(id) {
+      },
+      addTask() {
       },
       startTask(id) {
         this.$confirm('此操作将启动任务, 是否继续?', '提示', {
@@ -209,30 +224,26 @@
             width: 300px;
             min-height: calc(100vh - 50px);
             padding: 10px;
-            border: 1px solid #eee;
-            border-radius: 20px;
             margin-left: 10px;
             h3 {
                 text-align: center;
             }
             .itme {
                 padding: 10px;
-                .progress{
+                .progress {
                     animation: myfirst 1s;
-                    -o-animation: myfirst 1s;	/* Firefox */
-                    -webkit-animation: myfirst 1s;	/* Safari 和 Chrome */
+                    -o-animation: myfirst 1s; /* Firefox */
+                    -webkit-animation: myfirst 1s; /* Safari 和 Chrome */
                     -o-animation: myfirst 1s;
-                    animation-iteration-count:infinite;
-                    -webkit-animation-iteration-count:infinite;
-                    -o-animation-iteration-count:infinite;
-                    -o-animation-iteration-count:infinite;
+                    animation-iteration-count: infinite;
+                    -webkit-animation-iteration-count: infinite;
+                    -o-animation-iteration-count: infinite;
+                    -o-animation-iteration-count: infinite;
                 }
             }
         }
         .task-list {
             padding: 10px;
-            border: 1px solid #eee;
-            border-radius: 20px;
             margin: 0 10px;
         }
     }
@@ -243,27 +254,42 @@
         }
     }
 
-    @keyframes myfirst
-    {
-        from {width: 0;}
-        to {width: 100%;}
+    @keyframes myfirst {
+        from {
+            width: 0;
+        }
+        to {
+            width: 100%;
+        }
     }
 
     @-moz-keyframes myfirst /* Firefox */
     {
-        from {width: 0;}
-        to {width: 100%;}
+        from {
+            width: 0;
+        }
+        to {
+            width: 100%;
+        }
     }
 
     @-webkit-keyframes myfirst /* Safari 和 Chrome */
     {
-        from {width: 0;}
-        to {width: 100%;}
+        from {
+            width: 0;
+        }
+        to {
+            width: 100%;
+        }
     }
 
     @-o-keyframes myfirst /* Opera */
     {
-        from {width: 0;}
-        to {width: 100%;}
+        from {
+            width: 0;
+        }
+        to {
+            width: 100%;
+        }
     }
 </style>

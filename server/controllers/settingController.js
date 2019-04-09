@@ -206,7 +206,7 @@ var obj = {
           stdout: data.stdout.split('\n').filter(d => d),
           stderr: data.stderr.split('\n').filter(d => d)
         }
-        console.log(addTaskObj.insertId,'task done')
+        console.log(taskObjRes.insertId,'task done')
         await taskModel.updateStatus({
           status: 1,
           id: addTaskObj.insertId
@@ -217,7 +217,7 @@ var obj = {
         })
       })
       .catch(async (err) => {
-        console.log('error',addTaskObj.insertId,'task done')
+        console.log('error',taskObjRes.insertId,'task done')
         await taskModel.updateStatusAndLog({
           log: err,
           status: 1,
