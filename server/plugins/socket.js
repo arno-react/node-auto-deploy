@@ -30,7 +30,7 @@ module.exports = {
             }
           }
         }
-        io.sockets.emit('deployList', updateLog)
+        allSend('deployList', updateLog)
       });
       ws.on('disconnect', async function () {
         console.log('disconnect', ws.id)
@@ -43,14 +43,12 @@ module.exports = {
           delete updateLog[id]
           delete WsOrId[ws.id]
           delete IdOrWs[id]
-          io.sockets.emit('deployList', updateLog)
+          allSend('deployList', updateLog)
         }
       })
     })
   },
   getWSbyTaskId(id){
-    console.log(id)
-    console.log(IdOrWs[id])
     if(IdOrWs[id]){
       return WSS[IdOrWs[id]]
     } {

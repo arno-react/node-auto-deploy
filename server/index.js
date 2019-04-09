@@ -7,7 +7,7 @@ var log4js = require("./plugins/log4j");
 var bodyParser = require('body-parser');
 const app = express()
 app.use(log4js.useLog());
-app.use(bodyParser());  //body-parser 解析json格式数据
+app.use(bodyParser.json());  //body-parser 解析json格式数据
 routes(app)
 // Import and Set Nuxt.js options
 let config = require('../nuxt.config.js')

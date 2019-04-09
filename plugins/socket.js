@@ -3,8 +3,18 @@ import io from 'socket.io-client'
 
 import {store} from '@/store'
 
-var socket = io(`ws://${location.host}:${location.port || 80}`);
+var socket = io(`ws://${location.host}`);
+
+socket.on('connect', function(){
+
+});
+socket.on('event', function(data){
+  console.log(data)
+});
+socket.on('disconnect', function(){
+});
 socket.on('deployList',async function (data) {
+  console.log(data)
   store.dispatch('deployList',data)
 })
 var socketF = {
