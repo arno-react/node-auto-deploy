@@ -3,7 +3,7 @@ import io from 'socket.io-client'
 
 import {store} from '@/store'
 
-var socket = io("ws://127.0.0.1:3000");
+var socket = io(`ws://${location.host}:${location.port || 80}`);
 socket.on('deployList',async function (data) {
   store.dispatch('deployList',data)
 })
