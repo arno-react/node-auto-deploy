@@ -68,6 +68,7 @@ var obj = {
       store_url: 'https://gitee.com/arno8/teacher_video.git',
       store_type: 0,
       num: 1,
+      branch: 'master',
       content: {
         store_url: 'https://gitee.com/arno8/teacher_video.git',
         store_user: 'arno8',
@@ -159,24 +160,32 @@ var obj = {
       })
       return
     }
-    let d = await  taskListModel.getById(id)
-    if (d.status === 1) {
+    console.log(id)
+    let taskObjRes = await taskListModel.getById(id)
+    if (!taskObjRes) {
+      res.json({
+        code: 0,
+        msg: '任务不存在'
+      })
+      return
+    }
+    if (taskObjRes.status === 1) {
       res.json({
         code: 0,
         msg: '任务已在执行中'
       })
       return
     }
-    let taskObj = {
-      num: d.num + 1,
-      pid: d.id,
-      store_url: d.store_url,
-      cmd: d.content,
-      workspace: d.workspace,
+    let addTaskObj = {
+      num: taskObjRes.num + 1,
+      pid: taskObjRes.id,
+      store_url: taskObjRes.store_url,
+      cmd: taskObjRes.content,
+      workspace: taskObjRes.workspace,
       status: 0
     }
-    let addTaskObj = await taskModel.add(taskObj)
-    if (!(addTaskObj.affectedRows > 0)) {
+    let addTaskRes = await taskModel.add(addTaskObj)
+    if (!(addTaskRes.affectedRows > 0)) {
       res.json({
         code: 0,
         msg: '系统错误'
@@ -184,11 +193,14 @@ var obj = {
       return
     }
     await taskListModel.update({
-      num: d.num + 1,
+      num: taskObjRes.num + 1,
       status: 1,
-      id: d.id
+      id: taskObjRes.id
     })
-    startCmd.addTask(addTaskObj.insertId, 4, JSON.parse(d.content))
+    let content = JSON.parse(taskObjRes.content)
+    content.title = taskObjRes.title
+    content.num = taskObjRes.num + 1
+    startCmd.addTask(addTaskRes.insertId, 4, content)
       .then(async (data) => {
         let obj = {
           stdout: data.stdout.split('\n').filter(d => d),
@@ -201,10 +213,11 @@ var obj = {
         })
         await taskListModel.updateStatus({
           status: 0,
-          id: d.id
+          id: taskObjRes.id
         })
       })
       .catch(async (err) => {
+        console.log('error',addTaskObj.insertId,'task done')
         await taskModel.updateStatusAndLog({
           log: err,
           status: 1,
@@ -212,13 +225,13 @@ var obj = {
         })
         await taskListModel.updateStatus({
           status: 0,
-          id: d.id
+          id: taskObjRes.id
         })
       })
     res.json({
       code: 1,
       data: {
-        taskId: addTaskObj.insertId
+        taskId: addTaskRes.insertId
       }
     })
 
@@ -233,7 +246,7 @@ var obj = {
       return
     }
     socket.getWSbyTaskId(id).emit('onClose', {id})
-    await taskModel.updateStopUid({uid:0,id:id})
+    await taskModel.updateStopUid({uid:0, id:id})
     res.json({
       code: 1,
       data:{}

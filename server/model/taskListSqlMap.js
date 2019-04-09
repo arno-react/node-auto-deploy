@@ -5,7 +5,7 @@ var taskListSqlMap = {
   updateNum: 'update task_list set num=?  where id=?',
   updateStatus: 'update task_list set status=?  where id=?',
   list: 'select * from task_list',
-  getById: 'select * from task_list where id = ?'
+  getById: 'select * from task_list where id =?'
 };
 
 module.exports = taskListSqlMap;

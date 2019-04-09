@@ -8,7 +8,7 @@
  * **/
 var argv = require('./util/argv')
 var logger = require('./util/log4j')
-logger.init (argv.name)
+logger.init ({name: argv.name, params: argv.params})
 var branchListTask = require('./cmd/branchListTask')
 var pullTask = require('./cmd/pullTask')
 var deleteDirTask = require('./cmd/deleteDirTask')

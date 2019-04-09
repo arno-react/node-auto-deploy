@@ -5,7 +5,6 @@ import {store} from '@/store'
 
 var socket = io("ws://127.0.0.1:3000");
 socket.on('deployList',async function (data) {
-  console.log(store, data)
   store.dispatch('deployList',data)
 })
 var socketF = {

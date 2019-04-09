@@ -1,6 +1,6 @@
 # auto-deploy
 
-> node auto deploy
+> node auto deploy  项目使用 Nuxt  express  element 
 
 ## Build Setup
 

@@ -1,3 +1,4 @@
-export const LOGIN = 'LOGIN';
+
 export const DEPLOYLIST = 'DEPLOYLIST';
+export const TASKLIST = 'TASKLIST';
 

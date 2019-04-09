@@ -91,8 +91,6 @@ module.exports = {
     }
   },
   logout: function (req, res, next) {
-    req.session.uid = null
-    req.session.uname = null
     res.json({
       code: 1,
       data: '登出成功'

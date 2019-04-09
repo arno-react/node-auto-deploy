@@ -13,18 +13,26 @@ exports.configure = function () {
           filename: 'log/log.log',
           pattern: "-yyyy-MM-dd.log",
           alwaysIncludePattern: true
-        },
-        task: {
+        }
+      },
+    categories: {default: {appenders: ['app'], level: 'info'}}
+  })
+}
+
+exports.configureToName = function (name) {
+  log4js.configure({
+    appenders:
+      {
+        [name]: {
           type: 'file',
-          filename: 'log/task.log',
+          filename: `log/${name}.log`,
           pattern: "-yyyy-MM-dd.log",
           alwaysIncludePattern: true
         }
       },
-    categories: {default: {appenders: ['app', 'task'], level: 'info'}}
+    categories: {default: {appenders: [name], level: 'info'}}
   })
 }
-
 /**
  * 暴露到应用的日志接口，调用该方法前必须确保已经configure过
  * @param name 指定log4js配置文件中的category。依此找到对应的appender。
