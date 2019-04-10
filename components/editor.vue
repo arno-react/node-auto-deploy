@@ -231,6 +231,24 @@
         this.$emit('cancel')
       },
       ok() {
+        let data = JSON.parse(JSON.stringify(this.from))
+        if(this.id){
+          data.id = id
+        }
+        const loading = this.$loading({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
+        Task.addTask(data).then(res => {
+          if (res.code === 1) {
+
+          }
+          loading.close();
+        }).catch( () => {
+          loading.close();
+        })
         this.$emit('cancel')
       },
       getInitData(id) {
