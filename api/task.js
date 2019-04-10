@@ -48,7 +48,7 @@ export function stopTask(id) {
 }
 export function checkGitInfo(data) {
   return request({
-    url: '/api/stopTask.json',
+    url: '/api/checkGitInfo.json',
     method: 'post',
     data: data
   })

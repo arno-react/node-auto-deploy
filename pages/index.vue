@@ -105,17 +105,23 @@
                 </el-table>
             </el-card>
         </div>
+        <editor :id = "id" :show="editorShow" @cancel="cancel"></editor>
     </section>
 </template>
 
 <script>
   import * as Task from '../api/task'
-
+  import editor from '@/components/editor'
   export default {
     data() {
       return {
-        percentage: 0
+        percentage: 0,
+        editorShow: false,
+        id: ''
       }
+    },
+    components: {
+      editor
     },
     mounted() {
       this.init()
@@ -155,8 +161,16 @@
         })
       },
       editorTask(id) {
+        this.editorShow = true
+        this.id = id
       },
       addTask() {
+        this.editorShow = true
+        this.id =''
+      },
+      cancel () {
+        this.editorShow = false
+        this.id =''
       },
       startTask(id) {
         this.$confirm('此操作将启动任务, 是否继续?', '提示', {
@@ -172,7 +186,6 @@
               });
               this.init()
             }
-
           })
         }).catch(() => {
           this.$message({

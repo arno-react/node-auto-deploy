@@ -8,10 +8,8 @@ var socket = io(`ws://${location.host}`);
 socket.on('connect', function(){
 
 });
-socket.on('event', function(data){
-  console.log(data)
-});
 socket.on('disconnect', function(){
+
 });
 socket.on('deployList',async function (data) {
   console.log(data)

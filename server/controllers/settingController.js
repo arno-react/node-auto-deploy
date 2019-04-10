@@ -9,9 +9,9 @@ var socket = require('../plugins/socket')
 var obj = {
   checkGitInfo: async function (req, res, next) {
     console.log(req.body)
-    var userName = req.body.userName
-    var password = req.body.password
-    var repositoryUrl = req.body.repositoryUrl
+    var userName = req.body.store_user
+    var password = req.body.store_password
+    var repositoryUrl = req.body.store_url
     if (!userName || !password || !repositoryUrl) {
       res.json({
         code: 0,
@@ -55,6 +55,7 @@ var obj = {
       return
     }
     let d = await taskListModel.getById(id)
+    d.content = JSON.parse(d.content)
     res.json({
       code: 1,
       data: d

@@ -100,8 +100,9 @@ module.exports = {
       console.error(stderr)
     });
     logger.info('"%s" branchList end.', repositoryUrl);
-    let data = res.stdout ? res.stdout.split(/\s/) : [];
-    return data.filter(d => d).join('\n');
+    let data = (res.stdout ? res.stdout.split(/\s/) : []).filter(d => d).join('\n');
+    logger.info('res %s',data)
+    return data;
   },
 
   async checkout(branch, workspace) {
@@ -146,6 +147,7 @@ module.exports = {
       console.error(stderr)
     });
     logger.info('git log end');
+    logger.info('res %s',res)
     return res
   }
 }

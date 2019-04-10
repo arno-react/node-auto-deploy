@@ -10,13 +10,13 @@ var params = argv.params || {}
 var runCmd = async arr => {
   let item = arr.shift()
   if (item.type === 0) {
-    await localTask(item.cmd, item.workspace || params.workspace)
+    await localTask(item.cmd, params.workspace)
   } else if (item.type === 1) {
-    if (item.cmd == '-scp-') {
-      await scpTask(params.remote, params.remote_password, item.workspace || params.workspace, item.src, item.dest)
-    } else {
-      await remoteTask(item.cmd, item.workspace)
-    }
+      await scpTask.copyToRemote(item.remote, item.remote_password, params.workspace, item.src, item.dest)
+  } else if (item.type === 2) {
+      await remoteTask(item.cmd, item.remote, item.remote_password,item.workspace)
+  }else if (item.type === 3) {
+    await scpTask.copyFromRemote(item.remote, item.remote_password, item.workspace, item.src, item.dest)
   }
   if(arr.length){
     runCmd(arr)
