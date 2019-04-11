@@ -204,6 +204,8 @@ var obj = {
     let content = JSON.parse(taskObjRes.content)
     content.title = taskObjRes.title
     content.num = taskObjRes.num + 1
+    content.workspace = taskObjRes.workspace
+    console.log('content', content)
     startCmd.addTask(addTaskRes.insertId, 4, content)
       .then(async (data) => {
         let obj = {
@@ -255,7 +257,47 @@ var obj = {
       code: 1,
       data:{}
     })
-  }
+  },
+  performTaskList :async function (req, res, next) {
+    var pid = req.body.pid
+    if (!pid && pid !== 0) {
+      res.json({
+        code: 0,
+        msg: '参数错误'
+      })
+      return
+    }
+    let d = await taskModel.List(pid).catch((d) => {
+      res.json({
+        code: 0,
+        msg: d.sqlMessage
+      })
+    })
+    res.json({
+      code: 1,
+      data: d
+    })
+  },
+  performTaskDetail :async function (req, res, next) {
+    var id = req.body.id
+    if (!id && id !== 0) {
+      res.json({
+        code: 0,
+        msg: '参数错误'
+      })
+      return
+    }
+    let d = await taskModel.getById(id).catch((d) => {
+      res.json({
+        code: 0,
+        msg: d.sqlMessage
+      })
+    })
+    res.json({
+      code: 1,
+      data: d
+    })
+  },
 }
 
 module.exports = obj

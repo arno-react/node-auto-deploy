@@ -4,8 +4,8 @@ var taskListSqlMap = {
   updateLog: 'update task set log=?  where id=?',
   updateStatus: 'update task set status=?  where id=?',
   updateStopUid: 'update task set stop_uid=?  where id=?',
-  StatusAndLog: 'update task set log=?,status=?  where id=?',
-  list: 'select * from task',
+  updateStatusAndLog: 'update task set log=?,status=?  where id=?',
+  list: 'select * from task  where pid=?',
   getById: 'select * from task where id = ?'
 };
 

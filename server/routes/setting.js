@@ -9,6 +9,8 @@ router.post('/taskDetail.json', setting.taskDetail);
 router.post('/addTask.json', setting.addTask);
 router.post('/startTask.json', setting.startTask);
 router.post('/stopTask.json', setting.stopTask);
+router.post('/performTaskList.json', setting.performTaskList);
+router.post('/performTaskDetail.json', setting.performTaskDetail);
 
 module.exports = router;
 

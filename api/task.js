@@ -9,6 +9,8 @@ export function taskList() {
     }
   })
 }
+
+
 export function delTask(id) {
   return request({
     url: '/api/delTask.json',
@@ -58,5 +60,24 @@ export function addTask(data) {
     url: '/api/addTask.json',
     method: 'post',
     data: data
+  })
+}
+
+export function performTaskList(pid) {
+  return request({
+    url: '/api/performTaskList.json',
+    method: 'post',
+    data: {
+      pid
+    }
+  })
+}
+export function performTaskDetail(id) {
+  return request({
+    url: '/api/performTaskDetail.json',
+    method: 'post',
+    data: {
+      id
+    }
   })
 }

@@ -70,9 +70,7 @@ module.exports = {
           symbolId: 'icon-[name]'
         }
       })
-    },
-    vendor: ['axios', 'vuex', 'element-ui'],
-
+    }
   },
   server: {
     port: 3000, // default: 3000

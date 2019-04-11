@@ -5,7 +5,7 @@
                 <div slot="header" class="clearfix">
                     <span>启动中的任务</span>
                 </div>
-                <div class="itme" v-for="(item ,key) in deployList" :key="key">
+                <div class="itme" v-for="(item ,key) in deployList" :key="key" @click.stop="see(key)">
                     任务：<span>{{item.title}}</span><span>#{{item.num}}</span>
                     <div role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
                          class="el-progress el-progress--line is-exception">
@@ -14,7 +14,7 @@
                                 <div class="el-progress-bar__inner progress" style="width: 50%;"><!----></div>
                             </div>
                         </div>
-                        <div class="el-progress__text" style="font-size: 14.4px;" @click="stopTask(key)"><i
+                        <div class="el-progress__text" style="font-size: 14.4px;" @click.stop="stopTask(key)"><i
                                 class="el-icon-circle-close"></i></div>
                     </div>
                 </div>
@@ -30,8 +30,7 @@
 
                 <el-table
                         :data="taskList"
-                        style="width: 100%"
-                        max-height="250">
+                        style="width: 100%">
                     <el-table-column
                             fixed
                             prop="title"
@@ -100,28 +99,45 @@
                                     size="small">
                                 执行任务
                             </el-button>
+                            <el-button
+                                    @click.native.prevent="historyTask(scope.row)"
+                                    type="text"
+                                    size="small">
+                                历史任务
+                            </el-button>
                         </template>
                     </el-table-column>
                 </el-table>
             </el-card>
         </div>
-        <editor :id = "id" :show="editorShow" @cancel="cancel" @update="init"></editor>
+        <editor :id="id" :show="editorShow" @cancel="cancel" @update="init"></editor>
+        <history :id="id" :show="historyShow" :title="title" @cancel="cancel" @see="see"></history>
+        <taskDetail :id="taskId" :show="detailShow" @cancel="cancel"></taskDetail>
     </section>
 </template>
 
 <script>
   import * as Task from '../api/task'
   import editor from '@/components/editor'
+  import history from '@/components/history'
+  import taskDetail from '@/components/taskDetail'
+
   export default {
     data() {
       return {
         percentage: 0,
         editorShow: false,
-        id: ''
+        historyShow: false,
+        detailShow: false,
+        id: '',
+        title: '',
+        taskId: ''
       }
     },
     components: {
-      editor
+      editor,
+      history,
+      taskDetail
     },
     mounted() {
       this.init()
@@ -131,8 +147,8 @@
         return this.$store.state.taskList
       },
       deployList() {
-        var data =  this.$store.state.deployList
-        if(!data.length){
+        var data = this.$store.state.deployList
+        if (!data.length) {
           this.init
         }
         return data
@@ -168,13 +184,26 @@
         this.editorShow = true
         this.id = id
       },
+      historyTask(row) {
+        this.historyShow = true
+        this.id = row.id
+        this.title = row.title
+      },
       addTask() {
         this.editorShow = true
-        this.id =''
+        this.id = ''
       },
-      cancel () {
+      see(id) {
+        this.detailShow = true
+        this.taskId = id
+      },
+      cancel() {
         this.editorShow = false
-        this.id =''
+        this.historyShow = false
+        this.detailShow = false
+        this.id = ''
+        this.taskId = ''
+        this.title = ''
       },
       startTask(id) {
         this.$confirm('此操作将启动任务, 是否继续?', '提示', {

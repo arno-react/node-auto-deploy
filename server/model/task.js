@@ -4,6 +4,14 @@ var taskSqlMap = require('./taskSqlMap');
 var pool = mysql.createPool(mysqlConf.mysql);
 
 module.exports = {
+  List:function (pid) {
+    return new Promise((resolve, reject) => {
+      pool.query(taskSqlMap.list, pid, function (error, result) {
+        if (error) reject(error);
+        resolve(result);
+      });
+    })
+  },
   add: function (data) {
     return new Promise((resolve, reject) => {
       pool.query(taskSqlMap.add, [data.num, data.pid, data.store_url, data.cmd, data.status, "[]", data.workspace], function (error, result) {
@@ -60,14 +68,14 @@ module.exports = {
     })
   },
   updateStatusAndLog: async function (data) {
-    var res = await this.getById(data.id)
-    let log = []
-    if(res.log){
-      log = JSON.parse(res.log)
-    }
-    log.push(data.log)
+    // var res = await this.getById(data.id)
+    // let log = data.log
+    // if(res.log){
+    //   log = JSON.parse(res.log)
+    // }
+    // log.push(data.log)
     return new Promise((resolve, reject) => {
-      pool.query(taskSqlMap.updateStatusAndLog, [JSON.stringify(log),data.status,data.id], function (error, result) {
+      pool.query(taskSqlMap.updateStatusAndLog, [JSON.stringify(data.log),data.status,data.id], function (error, result) {
         if (error) reject(error);
         resolve(result.affectedRows > 0);
       });

@@ -36,8 +36,9 @@ module.exports = {
         console.log('disconnect', ws.id)
         let id = WsOrId[ws.id]
         if (id) {
-          await taskModel.updateLog({
+          await taskModel.updateStatusAndLog({
             log: updateLog[id],
+            status: 1,
             id: id
           })
           delete updateLog[id]

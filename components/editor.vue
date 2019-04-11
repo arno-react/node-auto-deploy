@@ -1,5 +1,5 @@
 <template>
-    <el-dialog :title="title" :visible="show" width="70%">
+    <el-dialog :title="title" :visible="visible" width="70%" @close="cancel">
         <el-form :model="form" label-width="100px">
             <el-card class="box-card">
                 <el-row :gutter="20">
@@ -194,6 +194,7 @@
     data: function () {
       return {
         title: '添加任务',
+        visible: false,
         form: {
           title: '',
           des: '',
@@ -226,6 +227,9 @@
       show: false
     },
     watch: {
+      show(newD, oldD){
+        this.visible = newD
+      },
       id(newD, oldD) {
         if (newD !== oldD) {
           if (newD) {
