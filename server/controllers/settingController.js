@@ -8,7 +8,6 @@ var taskModel = require('../model/task')
 var socket = require('../plugins/socket')
 var obj = {
   checkGitInfo: async function (req, res, next) {
-    console.log(req.body)
     var userName = req.body.store_user
     var password = req.body.store_password
     var repositoryUrl = req.body.store_url
@@ -20,7 +19,6 @@ var obj = {
       return
     }
     startCmd.addTask('getBranch', 1, req.body).then((data) => {
-      console.log(data)
       let d = {
         stdout: data.stdout.split('\n').filter(d => d),
         stderr: data.stderr.split('\n').filter(d => d)
@@ -164,7 +162,6 @@ var obj = {
       })
       return
     }
-    console.log(id)
     let taskObjRes = await taskListModel.getById(id)
     if (!taskObjRes) {
       res.json({
@@ -205,7 +202,6 @@ var obj = {
     content.title = taskObjRes.title
     content.num = taskObjRes.num + 1
     content.workspace = taskObjRes.workspace
-    console.log('content', content)
     startCmd.addTask(addTaskRes.insertId, 4, content)
       .then(async (data) => {
         let obj = {
