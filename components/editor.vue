@@ -1,38 +1,38 @@
 <template>
-    <el-dialog :title="title" :visible.sync="show" width="70%">
+    <el-dialog :title="title" :visible="show" width="70%">
         <el-form :model="form" label-width="100px">
             <el-card class="box-card">
                 <el-row :gutter="20">
                     <el-col :span="7">
                         <el-form-item label="任务标题">
-                            <el-input  v-model="form.title"></el-input>
+                            <el-input v-model="form.title" placeholder="请输入任务标题"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="7">
                         <el-form-item label="任务描述">
-                            <el-input v-model="form.des"></el-input>
+                            <el-input v-model="form.des" placeholder="请输入任务描述"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
             </el-card>
             <el-card class="box-card">
                 <el-form-item label="仓库地址">
-                    <el-input disabled="disabled" v-model="form.store_url"></el-input>
+                    <el-input :disabled="disabled" v-model="form.store_url" placeholder="请输入仓库地址"></el-input>
                 </el-form-item>
                 <el-row :gutter="20">
                     <el-col :span="7">
                         <el-form-item label="仓库用户名">
-                            <el-input disabled="disabled"  v-model="form.store_user"></el-input>
+                            <el-input :disabled="disabled" v-model="form.store_user" placeholder="请输入仓库用户名"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="7">
                         <el-form-item label="仓库密码">
-                            <el-input disabled="disabled"  v-model="form.store_password"></el-input>
+                            <el-input :disabled="disabled" v-model="form.store_password" placeholder="请输入仓库密码"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="仓库类型">
-                            <el-select  disabled="disabled"  v-model="form.store_type" placeholder="请选择仓库类型">
+                            <el-select :disabled="disabled" v-model="form.store_type" placeholder="请选择仓库类型">
                                 <el-option label="GIT" :value="0"></el-option>
                                 <el-option label="SVN" disabled="" :value="1"></el-option>
                             </el-select>
@@ -48,10 +48,12 @@
                     </el-radio-group>
                 </el-form-item>
             </el-card>
-            <template v-for="item in form.cmd">
+            <template v-for="(item, index) in form.cmd">
                 <el-card class="box-card" v-if="item.type === 0">
                     <div slot="header" class="clearfix">
                         <span>本地命令</span>
+                        <el-button style="float: right; padding: 3px 0" type="text" @click.native.prevent="delTask(index)">删除
+                        </el-button>
                     </div>
                     <el-form-item label="本地命令">
                         <el-input v-model="item.cmd"></el-input>
@@ -61,10 +63,11 @@
                         <div class="tip">命令工作路径如不填，为项目工作目录</div>
                     </el-form-item>
                 </el-card>
-
                 <el-card class="box-card" v-if="item.type === 1">
                     <div slot="header" class="clearfix">
                         <span>本地文件复制到远程</span>
+                        <el-button style="float: right; padding: 3px 0" type="text" @click.native.prevent="delTask(index)">删除
+                        </el-button>
                     </div>
                     <el-row :gutter="20">
                         <el-col :span="12">
@@ -97,6 +100,8 @@
                 <el-card class="box-card" v-if="item.type === 2">
                     <div slot="header" class="clearfix">
                         <span>远程命令</span>
+                        <el-button style="float: right; padding: 3px 0" type="text" @click.native.prevent="delTask(index)">删除
+                        </el-button>
                     </div>
                     <el-form-item label="远程命令">
                         <el-input v-model="item.cmd"></el-input>
@@ -115,12 +120,14 @@
                     </el-row>
                     <el-form-item label="命令工作目录">
                         <el-input v-model="form.workspace"></el-input>
-                        <div class="tip">只能为绝对路径</div>
+                        <div class="tip">只能为绝对路径，可不填为用户目录</div>
                     </el-form-item>
                 </el-card>
                 <el-card class="box-card" v-if="item.type === 3">
                     <div slot="header" class="clearfix">
                         <span>远程文件复制到本地</span>
+                        <el-button style="float: right; padding: 3px 0" type="text" @click.native.prevent="delTask(index)">删除
+                        </el-button>
                     </div>
                     <el-row :gutter="20">
                         <el-col :span="12">
@@ -166,7 +173,7 @@
                     </el-col>
 
                     <el-col :span="5">
-                        <el-button type="primary" @click="addTask"><i class="el-icon-plus"></i>新增任务</el-button>
+                        <el-button type="primary" @click="addTask"><i class="el-icon-plus"></i>新增命令任务</el-button>
                     </el-col>
                 </el-row>
             </el-card>
@@ -195,13 +202,21 @@
           store_user: '',
           store_password: '',
           branch: '',
-          cmd: [
-          ]
+          cmd: []
         },
         formLabelWidth: 100,
         taskType: 0,
         branchList: [],
-        disabled: false
+        disabled: false,
+        tip: {
+          branch: '请选择仓库分支，请选拉',
+          store_password: '请输入仓库密码',
+          store_user: '请输入仓库用户名',
+          store_type: '请选择仓库类型',
+          store_url: '请输入仓库地址',
+          des: '请输入任务描述',
+          title: '请输入任务标题'
+        }
       }
     },
     props: {
@@ -220,6 +235,17 @@
           } else {
             this.title = '添加任务'
             this.disabled = false
+            this.form = {
+              title: '',
+              des: '',
+              store_url: '',
+              store_type: 0,
+              store_user: '',
+              store_password: '',
+              branch: '',
+              cmd: []
+            }
+            this.branchList = []
           }
         }
       }
@@ -227,13 +253,105 @@
     components: {},
     computed: {},
     methods: {
+      checkData(data) {
+        var status = true
+        Object.keys(this.tip).forEach(key => {
+          if (!data[key] && data[key]!== 0 ) {
+            this.$message({
+              type: 'error',
+              message: this.tip[key]
+            })
+           return status = false
+          }
+        })
+        if(!status){
+          return false
+        }
+        if (!data.cmd.length) {
+          this.$message({
+            type: 'error',
+            message: '请添加命令任务'
+          })
+          return status = false
+        }
+        data.cmd.forEach(item => {
+          if(item.type === 0){
+            if(!item.cmd){
+              this.$message({
+                type: 'error',
+                message: '请输入本地命令'
+              })
+              return status = false
+            }
+          }else if(item.type === 1 || item.type === 3){
+            if(!item.remote){
+              this.$message({
+                type: 'error',
+                message: '请输入远程地址'
+              })
+              return status = false
+            }
+            if(!item.remote_password){
+              this.$message({
+                type: 'error',
+                message: '请输入远程密码'
+              })
+              return status = false
+            }
+            if(!item.dest){
+              this.$message({
+                type: 'error',
+                message: '请输入远程路径'
+              })
+              return status = false
+            }
+            if(!item.src){
+              this.$message({
+                type: 'error',
+                message: '请输入本地路径'
+              })
+              return status = false
+            }
+
+          } else if(item.type === 2){
+            if(!item.cmd){
+              this.$message({
+                type: 'error',
+                message: '请输入远程命令'
+              })
+              return status = false
+            }
+            if(!item.remote){
+              this.$message({
+                type: 'error',
+                message: '请输入远程地址'
+              })
+              return status = false
+            }
+            if(!item.remote_password){
+              this.$message({
+                type: 'error',
+                message: '请输入远程密码'
+              })
+              return status = false
+            }
+          }
+        })
+        return status
+      },
       cancel() {
         this.$emit('cancel')
       },
+      delTask (index) {
+        this.form.cmd.splice(index,1)
+      },
       ok() {
-        let data = JSON.parse(JSON.stringify(this.from))
-        if(this.id){
-          data.id = id
+        let data = JSON.parse(JSON.stringify(this.form))
+        if (!this.checkData(data)) {
+          return
+        }
+        if (this.id) {
+          data.id = this.id
         }
         const loading = this.$loading({
           lock: true,
@@ -243,13 +361,13 @@
         });
         Task.addTask(data).then(res => {
           if (res.code === 1) {
-
+            this.$emit('update')
+            this.$emit('cancel')
           }
           loading.close();
-        }).catch( () => {
+        }).catch(() => {
           loading.close();
         })
-        this.$emit('cancel')
       },
       getInitData(id) {
         const loading = this.$loading({
@@ -263,7 +381,7 @@
             var data = res.data
             var content = data.content
             this.branchList = [content.branch]
-            this.form =  {
+            this.form = {
               title: data.title,
               des: data.des,
               store_url: content.store_url,
@@ -275,7 +393,7 @@
             }
           }
           loading.close();
-        }).catch( () => {
+        }).catch(() => {
           loading.close();
         })
       },
@@ -302,11 +420,11 @@
         });
         Task.checkGitInfo(data).then(res => {
           if (res.code === 1) {
-            this.from.branch = res.data[0]
+            this.form.branch = res.data[0]
             this.branchList = res.data
           }
           loading.close();
-        }).catch( () => {
+        }).catch(() => {
           loading.close();
         })
       },
@@ -320,7 +438,8 @@
           case 0 :
             obj = {
               type: 0,//本地
-              cmd: ''
+              cmd: '',
+              workspace: ''
             }
             break;
           case 1 :
@@ -336,6 +455,7 @@
             obj = {
               type: 2,//远程
               cmd: '',
+              workspace: '',
               remote: '',
               remote_password: ''
             }
@@ -379,8 +499,9 @@
             padding-bottom: 0;
         }
     }
-    .tip{
-        color:red;
+
+    .tip {
+        color: red;
         line-height: 1.3;
         margin-top: 5px;
     }

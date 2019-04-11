@@ -7,6 +7,8 @@ async  function start (stop) {
   await git.addRemote(params.workspace,params.store_url,params.store_user, params.store_password)
   await git.fetch(params.workspace, params.store_url)
   await git.pull(params.branch,params.workspace)
+  await git.checkout(params.branch,params.workspace)
+  await git.pull(params.branch,params.workspace)
   if (stop) {
     process.exit(0)
   }

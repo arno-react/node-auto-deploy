@@ -62,93 +62,96 @@ var obj = {
     })
   },
   addTask: async function (req, res, next) {
+    var body = req.body
     var dataParams = {
-      title: 'bot -dev',
-      des: 'bot -dev',
+      title: body.title,
+      des: body.des,
       uid: 0,
-      store_url: 'https://gitee.com/arno8/teacher_video.git',
-      store_type: 0,
-      num: 1,
-      branch: 'master',
+      store_url: body.store_url,
+      store_type: body.store_type,
+      branch: body.branch,
       content: {
-        store_url: 'https://gitee.com/arno8/teacher_video.git',
-        store_user: 'arno8',
-        store_password: 'xiaochen100200',
-        store_type: 0,
-        branch: 'master',
-        remote: 'root@118.24.156.247:22',
-        remote_password: 'xiao@chen100200',
-        cmd: [
-          {
-            des: 'npm install',
-            type: 0,//本地
-            cmd: 'npm install'
-          },
-          {
-            des: 'npm run bulid',
-            type: 0,//本地
-            cmd: 'npm run build'
-          },
-          {
-            des: '上传到服务器',
-            type: 1,//scp
-            cmd: '-scp-',
-            src: './dist',
-            dest: '~/dist'
-          }
-        ]
+        store_url: body.store_url,
+        store_user: body.store_user,
+        store_password: body.store_password,
+        store_type: body.store_type,
+        branch: body.branch,
+        cmd: body.cmd
       }
     }
-    var obj = tmp.dirSync();
-    dataParams.workspace = obj.name
-    dataParams.content.workspace = obj.name
-    dataParams.content.start_uid = 0
-    let params = {
-      store_url: dataParams.content.store_url,
-      store_user: dataParams.content.store_user,
-      store_password: dataParams.content.store_password,
-      workspace: dataParams.workspace,
-      branch: dataParams.content.branch,
-    }
-    let data = await startCmd.addTask('init', 2, params).catch((d) => {
-      res.json({
-        code: 0,
-        msg: d
-      })
-    })
-    let d = {
-      stdout: data.stdout.split('\n').filter(d => d),
-      stderr: data.stderr.split('\n').filter(d => d)
-    }
-    if (d.stderr.length) {
-      res.json({
-        code: 0,
-        msg: d.stderr.join('  ')
-      })
-    } else {
+    if (false) {
+      dataParams.id = body.id
       dataParams.content = JSON.stringify(dataParams.content)
-      let d = await taskListModel.add(dataParams).catch((d) => {
+      let d = await taskListModel.updaateAll(dataParams).catch((d) => {
         res.json({
           code: 0,
-          msg: d
+          msg: d.sqlMessage
         })
       })
-      if (d.affectedRows > 0) {
+      if (d) {
         res.json({
           code: 1,
           data: {}
         })
       } else {
-        let workspace = {
-          workspace: data.workspace
-        }
-        startCmd.addTask('deleteDir', 3, workspace)
         res.json({
           code: 0,
-          msg: '保存失败'
+          msg: '修改失败'
         })
       }
+    } else {
+      dataParams.num = 1
+      var obj = tmp.dirSync();
+      dataParams.workspace = obj.name
+      dataParams.content.workspace = obj.name
+      dataParams.content.start_uid = 0
+      let params = {
+        store_url: dataParams.content.store_url,
+        store_user: dataParams.content.store_user,
+        store_password: dataParams.content.store_password,
+        workspace: dataParams.workspace,
+        branch: dataParams.content.branch,
+      }
+      let data = await startCmd.addTask('init', 2, params).catch((d) => {
+        res.json({
+          code: 0,
+          msg: d.sqlMessage
+        })
+      })
+      let d = {
+        stdout: data.stdout.split('\n').filter(d => d),
+        stderr: data.stderr.split('\n').filter(d => d)
+      }
+      if (d.stderr.length) {
+        res.json({
+          code: 0,
+          msg: d.stderr.join('  ')
+        })
+      } else {
+        dataParams.content = JSON.stringify(dataParams.content)
+        let d = await taskListModel.add(dataParams).catch((d) => {
+          res.json({
+            code: 0,
+            msg: d.sqlMessage
+          })
+        })
+        if (d.affectedRows > 0) {
+          res.json({
+            code: 1,
+            data: {}
+          })
+        } else {
+          let workspace = {
+            workspace: data.workspace
+          }
+          startCmd.addTask('deleteDir', 3, workspace)
+          res.json({
+            code: 0,
+            msg: '保存失败'
+          })
+        }
 
+      }
     }
 
   },

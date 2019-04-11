@@ -105,7 +105,7 @@
                 </el-table>
             </el-card>
         </div>
-        <editor :id = "id" :show="editorShow" @cancel="cancel"></editor>
+        <editor :id = "id" :show="editorShow" @cancel="cancel" @update="init"></editor>
     </section>
 </template>
 
@@ -131,7 +131,11 @@
         return this.$store.state.taskList
       },
       deployList() {
-        return this.$store.state.deployList
+        var data =  this.$store.state.deployList
+        if(!data.length){
+          this.init
+        }
+        return data
       }
     },
     methods: {

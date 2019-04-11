@@ -6,7 +6,7 @@ var pool = mysql.createPool(mysqlConf.mysql);
 module.exports = {
   add: function (data) {
     return new Promise((resolve, reject) => {
-      pool.query(taskListSqlMap.add, [data.title, data.des,data.uid, data.store_url, data.store_type, data.content, data.workspace], function (error, result) {
+      pool.query(taskListSqlMap.add, [data.title, data.des,data.uid, data.store_url, data.store_type,data.branch, data.content, data.workspace], function (error, result) {
         if (error) reject(error);
         console.log(result)
         resolve(result);
@@ -33,7 +33,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       pool.query(taskListSqlMap.deleteById, id, function (error, result) {
         if (error) reject(error);
-        resolve(result.affectedRows > 0);
+        resolve(result && result.affectedRows > 0);
       });
     })
   },
@@ -41,7 +41,15 @@ module.exports = {
     return new Promise((resolve, reject) => {
       pool.query(taskListSqlMap.update, [data.num,data.status,data.id], function (error, result) {
         if (error) reject(error);
-        resolve(result.affectedRows > 0);
+        resolve(result &&  result.affectedRows > 0);
+      });
+    })
+  },
+  updaateAll: function (data) {
+    return new Promise((resolve, reject) => {
+      pool.query(taskListSqlMap.updaateAll, [data.title, data.des, data.branch,  data.content, data.id], function (error, result) {
+        if (error) reject(error);
+        resolve(result && result.affectedRows > 0);
       });
     })
   },
@@ -49,7 +57,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       pool.query(taskListSqlMap.updateNum, [data.num,data.id], function (error, result) {
         if (error) reject(error);
-        resolve(result.affectedRows > 0);
+        resolve(result &&  result.affectedRows > 0);
       });
     })
   },
@@ -57,7 +65,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       pool.query(taskListSqlMap.updateStatus, [data.status,data.id], function (error, result) {
         if (error) reject(error);
-        resolve(result.affectedRows > 0);
+        resolve(result && result.affectedRows > 0);
       });
     })
   }
