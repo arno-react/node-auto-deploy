@@ -6,15 +6,18 @@
 var authRoute = require('./auth');
 var home = require('./home');
 var setting = require('./setting');
+var Token = require('../util/token');
 module.exports = function(app){
   app.use('/api', authRoute);
   app.use('/api', function(req, res, next){
-     if(req){
+     let token =req.headers.token
+     if(token && Token.checkToken(token)){
        next()
      }else{
        res.json({
-         code:'login',
-         error:'not login'
+         code: 0,
+         errorCode: 1,
+         msg:'not login'
        })
      }
   });

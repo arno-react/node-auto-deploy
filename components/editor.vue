@@ -27,7 +27,7 @@
                     </el-col>
                     <el-col :span="7">
                         <el-form-item label="仓库密码">
-                            <el-input :disabled="disabled" v-model="form.store_password" placeholder="请输入仓库密码"></el-input>
+                            <el-input :disabled="disabled" type="password" v-model="form.store_password" placeholder="请输入仓库密码"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
@@ -77,7 +77,7 @@
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="密码">
-                                <el-input v-model="item.remote_password"></el-input>
+                                <el-input v-model="item.remote_password" type="password"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>

@@ -1,5 +1,5 @@
 import {login, logout} from '@/api/login'
-import {getToken, setToken, removeToken} from '@/utils/auth'
+import {getToken, setToken, removeToken, getLogin, setLogin} from '@/utils/auth'
 import {Message} from 'element-ui'
 // Tip Vuex 的状态存储是响应式的,所以最好记得初始化，不然容易gg
 export const state = {
@@ -8,7 +8,8 @@ export const state = {
   avatar: '',
   roles: [],
   userInfo: null,
-  menuList: []
+  menuList: [],
+  goLogin: getLogin()
 }
 
 export const mutations = {
@@ -29,6 +30,9 @@ export const mutations = {
   },
   SET_MENULIST: (state, menuList) => {
     state.menuList = menuList
+  },
+  SET_GOLOGIN: (state, menuList) => {
+    state.goLogin = menuList
   }
 }
 
@@ -119,9 +123,11 @@ export const actions = {
   },
 
   // 前端 登出
-  FedLogOut({commit}) {
+  FedLogOut({commit},data) {
     return new Promise(resolve => {
+      commit('SET_GOLOGIN', data)
       commit('SET_TOKEN', '')
+      setLogin(data)
       removeToken()
       resolve()
     })

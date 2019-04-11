@@ -2,6 +2,7 @@
  * Created by arno
  */
 var taskListModel = require('../model/taskList')
+var startCmd = require('../util/startCmd')
 module.exports = {
   list: async function (req, res, next) {
    let d =  await taskListModel.list()
@@ -19,6 +20,13 @@ module.exports = {
       })
       return
     }
+    let r =  await taskListModel.getById(id)
+    await startCmd.addTask('deleteDir', 3, r).catch((d) => {
+      res.json({
+        code: 0,
+        msg: d
+      })
+    })
     let d =  await taskListModel.deleteById(id)
     if(d){
       res.json({

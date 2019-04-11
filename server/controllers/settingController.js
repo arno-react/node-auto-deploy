@@ -79,7 +79,7 @@ var obj = {
         cmd: body.cmd
       }
     }
-    if (false) {
+    if (body.id) {
       dataParams.id = body.id
       dataParams.content = JSON.stringify(dataParams.content)
       let d = await taskListModel.updaateAll(dataParams).catch((d) => {
@@ -115,7 +115,7 @@ var obj = {
       let data = await startCmd.addTask('init', 2, params).catch((d) => {
         res.json({
           code: 0,
-          msg: d.sqlMessage
+          msg: d
         })
       })
       let d = {

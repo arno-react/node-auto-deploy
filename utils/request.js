@@ -34,7 +34,7 @@ service.interceptors.response.use(
     const res = response.data
     if (res.code !== 1 && res.code !== '1') {
       // 123104 token 过期
-      if (res.code === 2) {
+      if (res.errorCode === 1) {
         MessageBox.confirm(
           '你已被登出，可以取消继续留在该页面，或者重新登录',
           '确定登出',
@@ -44,11 +44,11 @@ service.interceptors.response.use(
             type: 'warning'
           }
         ).then(() => {
-          store.dispatch('FedLogOut').then(() => {
+          store.dispatch('user/FedLogOut',true).then(() => {
             location.reload() // 为了重新实例化vue-router对象 避免bug
           })
         })
-        return
+        return Promise.reject('error')
       }
       Message({
         message: res.msg || '未知异常,请联系程序员小哥哥~',

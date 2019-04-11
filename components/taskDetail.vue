@@ -31,21 +31,29 @@
       },
       id(newD, oldD) {
         if (newD) {
-          this.getInitData(newD)
+          if (this.deployList[newD]) {
+            this.data = this.deployList[newD]
+            this.title = this.data.title + '#' + this.data.num
+            this.noDone = true
+          }else{
+            this.getInitData(newD)
+          }
+
         } else {
           this.data = []
+        }
+      },
+      deployList (newD) {
+        if (newD[this.id]) {
+          this.data = newD[this.id]
+          this.title = this.data.title + '#' + this.data.num
+          this.noDone = true
         }
       }
     },
     computed: {
       deployList() {
-        var data = this.$store.state.deployList
-        if (data[this.id]) {
-          this.data = data[this.id]
-          this.title = this.data.title + '#' + this.data.num
-          this.noDone = true
-        }
-        return data
+        return this.$store.state.deployList
       }
     },
     components: {},
