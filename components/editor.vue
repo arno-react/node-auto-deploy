@@ -52,7 +52,13 @@
                 <el-card class="box-card" v-if="item.type === 0">
                     <div slot="header" class="clearfix">
                         <span>本地命令</span>
-                        <el-button style="float: right; padding: 3px 0" type="text" @click.native.prevent="delTask(index)">删除
+                        <el-button style="float: right; padding: 3px 0;margin-right: 10px;" type="text" @click.native.prevent="delTask(index)">删除
+                        </el-button>
+                        <el-button style="float: right; padding: 3px 0;margin-right: 10px;" v-show="index!==0" type="text" @click.native.prevent="upTask(index)">
+                            <i class="el-icon-upload2"></i>
+                        </el-button>
+                        <el-button style="float: right; padding: 3px 0;margin-right: 10px;" type="text" v-show="index!== (form.cmd.length-1)"   @click.native.prevent="dowTask(index)">
+                            <i class="el-icon-download"></i>
                         </el-button>
                     </div>
                     <el-form-item label="本地命令">
@@ -66,7 +72,13 @@
                 <el-card class="box-card" v-if="item.type === 1">
                     <div slot="header" class="clearfix">
                         <span>本地文件复制到远程</span>
-                        <el-button style="float: right; padding: 3px 0" type="text" @click.native.prevent="delTask(index)">删除
+                        <el-button style="float: right; padding: 3px 0;margin-right: 10px;" type="text" @click.native.prevent="delTask(index)">删除
+                        </el-button>
+                        <el-button style="float: right; padding: 3px 0;margin-right: 10px;" v-show="index!==0" type="text" @click.native.prevent="upTask(index)">
+                            <i class="el-icon-upload2"></i>
+                        </el-button>
+                        <el-button style="float: right; padding: 3px 0;margin-right: 10px;" type="text" v-show="index!== (form.cmd.length-1)"   @click.native.prevent="dowTask(index)">
+                            <i class="el-icon-download"></i>
                         </el-button>
                     </div>
                     <el-row :gutter="20">
@@ -100,7 +112,14 @@
                 <el-card class="box-card" v-if="item.type === 2">
                     <div slot="header" class="clearfix">
                         <span>远程命令</span>
-                        <el-button style="float: right; padding: 3px 0" type="text" @click.native.prevent="delTask(index)">删除
+
+                        <el-button style="float: right; padding: 3px 0;margin-right: 10px;"  type="text" @click.native.prevent="delTask(index)">删除
+                        </el-button>
+                        <el-button style="float: right; padding: 3px 0;margin-right: 10px;"  v-show="index!==0" type="text" @click.native.prevent="upTask(index)">
+                            <i class="el-icon-upload2"></i>
+                        </el-button>
+                        <el-button style="float: right; padding: 3px 0;margin-right: 10px;" type="text" v-show="index!== (form.cmd.length-1)"   @click.native.prevent="dowTask(index)">
+                            <i class="el-icon-download"></i>
                         </el-button>
                     </div>
                     <el-form-item label="远程命令">
@@ -126,7 +145,13 @@
                 <el-card class="box-card" v-if="item.type === 3">
                     <div slot="header" class="clearfix">
                         <span>远程文件复制到本地</span>
-                        <el-button style="float: right; padding: 3px 0" type="text" @click.native.prevent="delTask(index)">删除
+                        <el-button style="float: right; padding: 3px 0;margin-right: 10px;" type="text" @click.native.prevent="delTask(index)">删除
+                        </el-button>
+                        <el-button style="float: right; padding: 3px 0;margin-right: 10px;" v-show="index!==0" type="text" @click.native.prevent="upTask(index)">
+                            <i class="el-icon-upload2"></i>
+                        </el-button>
+                        <el-button style="float: right; padding: 3px 0;margin-right: 10px;" type="text" v-show="index!== (form.cmd.length-1)"   @click.native.prevent="dowTask(index)">
+                            <i class="el-icon-download"></i>
                         </el-button>
                     </div>
                     <el-row :gutter="20">
@@ -348,6 +373,20 @@
       },
       delTask (index) {
         this.form.cmd.splice(index,1)
+      },
+      upTask (index){
+        if (index === 0) {
+          return
+        }
+        let arr =   this.form.cmd
+        arr.splice(index-1, 1, ...arr.splice(index, 1, arr[index - 1]))
+      },
+      dowTask(index){
+        if (index === this.form.cmd.length) {
+          return
+        }
+        let arr =   this.form.cmd
+        arr.splice(index, 1, ...arr.splice(index + 1, 1, arr[index]))
       },
       ok() {
         let data = JSON.parse(JSON.stringify(this.form))
