@@ -114,7 +114,7 @@
                 </el-table>
             </el-card>
         </div>
-        <editor :id="id" :show="editorShow" @cancel="cancel" @update="init"></editor>
+        <editor :id="editorId" :show="editorShow" @cancel="cancel" @update="init"></editor>
         <history :id="id" :show="historyShow" :title="title" @cancel="cancel" @see="see"></history>
         <taskDetail :id="taskId" :show="detailShow" @cancel="cancel"></taskDetail>
     </section>
@@ -134,6 +134,7 @@
         historyShow: false,
         detailShow: false,
         id: '',
+        editorId: '',
         title: '',
         taskId: ''
       }
@@ -187,7 +188,7 @@
       },
       editorTask(id) {
         this.editorShow = true
-        this.id = id
+        this.editorId = id
       },
       historyTask(row) {
         this.historyShow = true
@@ -207,6 +208,7 @@
         this.historyShow = false
         this.detailShow = false
         this.id = ''
+        this.editorId = ''
         this.taskId = ''
         this.title = ''
       },
