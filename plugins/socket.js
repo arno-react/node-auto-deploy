@@ -16,20 +16,8 @@ socket.on('deployList',async function (data) {
 })
 var socketF = {
   self:socket,
-  newUser(data){
-    socket.emit('newUser', data)
-  },
-  add(data){
-    socket.emit('add', data)
-  },
-  getInfo(data){
-    socket.emit('getInfo', data)
-  },
-  getAllUser(){
-    socket.emit('getAllUser', store.state.user)
-  },
-  getDelUser(){
-    socket.emit('getDelUser', store.state.user)
+  test(data){
+    socket.emit('test', data)
   }
 
 }
