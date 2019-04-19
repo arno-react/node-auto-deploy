@@ -6,6 +6,7 @@
 var authRoute = require('./auth');
 var home = require('./home');
 var setting = require('./setting');
+var user = require('./user');
 var Token = require('../util/token');
 module.exports = function(app){
   app.use('/api', authRoute);
@@ -23,4 +24,5 @@ module.exports = function(app){
   });
   app.use('/api', home);
   app.use('/api', setting);
+  app.use('/api', user);
 };

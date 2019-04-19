@@ -13,7 +13,15 @@ export const mutations = {
   },
   [types.TASKLIST](state,data) {
     state.taskList = data;
+  },
+  [types.USERLIST](state,data) {
+    state.userList = data;
+  },
+  [types.PERMISSLIST](state,data) {
+    state.permissList = data;
   }
+
+
 }
 
 export default mutations

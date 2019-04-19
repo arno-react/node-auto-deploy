@@ -4,6 +4,22 @@ var userSqlMap = require('./userSqlMap');
 var pool = mysql.createPool(mysqlConf.mysql);
 
 module.exports = {
+  list: function () {
+    return new Promise((resolve, reject) => {
+      pool.query(userSqlMap.list, function (error, result) {
+        if (error) reject(error);
+        resolve(result);
+      });
+    })
+  },
+  listAndPer: function () {
+    return new Promise((resolve, reject) => {
+      pool.query(userSqlMap.listAndPer, function (error, result) {
+        if (error) reject(error);
+        resolve(result);
+      });
+    })
+  },
   add: function (data) {
     return new Promise((resolve, reject) => {
       pool.query(userSqlMap.add, [data.name, data.password], function (error, result) {
@@ -33,7 +49,16 @@ module.exports = {
     return new Promise((resolve, reject) => {
       pool.query(userSqlMap.deleteById, id, function (error, result) {
         if (error) reject(error);
-        resolve(result.affectedRows > 0);
+        console.log(result)
+        resolve(result && result.affectedRows > 0);
+      });
+    })
+  },
+  update: function (data) {
+    return new Promise((resolve, reject) => {
+      pool.query(userSqlMap.update, [data.name, data.password,data.uid], function (error, result) {
+        if (error) reject(error);
+        resolve(result &&  result.affectedRows > 0);
       });
     })
   },
@@ -41,7 +66,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       pool.query(userSqlMap.updatePassword, [data.password,data.id], function (error, result) {
         if (error) reject(error);
-        resolve(result.affectedRows > 0);
+        resolve(result && result.affectedRows > 0);
       });
     })
   },
@@ -49,7 +74,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       pool.query(userSqlMap.checkUserName, [data.name], function (error, result) {
         if (error) reject(error);
-        resolve(result.affectedRows > 0);
+        resolve(result && result.affectedRows > 0);
       });
     })
   },

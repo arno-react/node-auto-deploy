@@ -44,6 +44,12 @@ export default {
           path: '/',
           icon: '',
           id: 0
+        },
+        {
+          title: '用户管理',
+          path: '/user',
+          icon: '',
+          id: 0
         }
       ]
       return constantRouter

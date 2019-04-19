@@ -9,7 +9,7 @@ module.exports = {
     var data = await userModel.checkUserName({name}).catch(d => {
       res.json({
         code: 0,
-        msg: d
+        msg:d.sqlMessage
       });
     })
     if (data) {
@@ -25,19 +25,34 @@ module.exports = {
     }
   },
   register: async function (req, res, next) {
+
     var name =  req.body.username
+    var data = await userModel.checkUserName({name}).catch(d => {
+      res.json({
+        code: 0,
+        msg:d.sqlMessage
+      });
+    })
+    if (data) {
+      res.json({
+        code: 0,
+        msg: '用户名已存在'
+      });
+      return
+    }
     var password =  req.body.password
     if (!name || !password) {
       res.json({
         code: 0,
         msg: '用户名或密码不能为空'
       });
+      return
     }
     password = Token.hashSync(password);
     var data = await userModel.add({name, password}).catch(d => {
       res.json({
         code: 0,
-        msg: d
+        msg: d.sqlMessage
       });
       return
     })
@@ -59,7 +74,7 @@ module.exports = {
     var data = await  userModel.getByName(name).catch(d => {
       res.json({
         code: 0,
-        msg: d
+        msg: d.sqlMessage
       });
     })
     if(data){

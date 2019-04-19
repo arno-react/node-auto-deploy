@@ -1,4 +1,5 @@
 import * as types from './mutation-types'
+import * as User from '../api/user'
 import * as Task from '../api/task'
 
 const actions = {
@@ -19,6 +20,29 @@ const actions = {
     return Task.taskList().then ( data => {
       if (data.code === 1) {
         commit(types.TASKLIST, data.data);
+      }
+    })
+  },
+  userList({commit}, data) {
+    return User.userkList().then ( data => {
+      if (data.code === 1) {
+        data.data = data.data.map(item => {
+          item.content = JSON.parse(item.content || '[]')
+          return item
+        })
+        commit(types.USERLIST, data.data);
+      }
+    })
+  },
+  permissList({commit}, data) {
+    return User.permissList().then ( data => {
+      if (data.code === 1) {
+        data.data = data.data.map(item => {
+          item.key = item.id
+          item.label = item.title
+          return item
+        })
+        commit(types.PERMISSLIST, data.data);
       }
     })
   }
