@@ -25,19 +25,24 @@ module.exports = {
 ```
 -  导入sql到数据库  sql文件在 /server/sql/iauto_deploy_2019-04-19.sql
 
--   Build Setup
+-   安装依赖 打包
 ``` bash
 # install dependencies
 $ npm install
 
-# serve with hot reload at localhost:3000
+# serve with hot reload at localhost:3000  // 开发环境 端口可以 nuxt.confing.js 修改
 $ npm run dev
 
 # build for production and launch server
 $ npm run build
-$ npm start
 
-# generate static project
-$ npm run generate
 ```
 For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
+
+-   使用pm2为项目守护启动 
+``` bash
+$ npm install pm2 -g 
+
+$ pm2 start npm --name "autodeploy" -- run start
+
+```
