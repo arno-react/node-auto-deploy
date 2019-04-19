@@ -70,6 +70,7 @@ export const actions = {
           sessionStorage.setItem('_juxin_buttonResMap_response_', JSON.stringify(permissionList))
           commit('SET_TOKEN', token)
           commit('SET_USERINFO', resp.data.user)
+          commit('SET_NAME', resp.data.user.uname)
           commit('SET_MENULIST', menuResList)
           setToken(token)
           Message({

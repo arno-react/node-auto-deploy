@@ -12,6 +12,14 @@ module.exports = {
       });
     })
   },
+  listAndType (type) {
+    return new Promise((resolve, reject) => {
+      pool.query(permissionsSqlMap.listAndType, type, function (error, result) {
+        if (error) reject(error);
+        resolve(result);
+      });
+    })
+  },
   add: function (data) {
     return new Promise((resolve, reject) => {
       pool.query(permissionsSqlMap.add, [data.api, data.title,data.type], function (error, result) {

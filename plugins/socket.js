@@ -12,7 +12,6 @@ socket.on('disconnect', function(){
 
 });
 socket.on('deployList',async function (data) {
-  console.log(data)
   store.dispatch('deployList',data)
 })
 var socketF = {

@@ -4,7 +4,7 @@
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
                     <span>用户列表</span>
-                    <el-button style="float: right; padding: 3px 0" type="text" @click.native.prevent="addUser()"> 新增
+                    <el-button style="float: right; padding: 3px 0" type="text"   v-permiss="'/userAdd.json'" @click.native.prevent="addUser()"> 新增
                     </el-button>
                 </div>
 
@@ -41,12 +41,14 @@
                             width="120">
                         <template slot-scope="scope">
                             <el-button
+                                    v-permiss="'/userDel.json'"
                                     @click.native.prevent="delUser(scope.row.uid)"
                                     type="text"
                                     size="small">
                                 移除
                             </el-button>
                             <el-button
+                                    v-permiss="'/userUpdate.json'"
                                     @click.native.prevent="editorUser(scope.row)"
                                     type="text"
                                     size="small">
@@ -88,7 +90,7 @@
 
             <div slot="footer" class="dialog-footer">
                 <el-button @click="cancel">取 消</el-button>
-                <el-button type="primary" @click="ok">确 定</el-button>
+                <el-button type="primary" @click="ok" >确 定</el-button>
             </div>
         </el-dialog>
     </section>

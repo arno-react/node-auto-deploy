@@ -14,7 +14,7 @@
                                 <div class="el-progress-bar__inner progress" style="width: 50%;"><!----></div>
                             </div>
                         </div>
-                        <div class="el-progress__text" style="font-size: 14.4px;" @click.stop="stopTask(key)"><i
+                        <div class="el-progress__text" style="font-size: 14.4px;" v-permiss="'/stopTask.json'" @click.stop="stopTask(key)"><i
                                 class="el-icon-circle-close"></i></div>
                     </div>
                 </div>
@@ -24,7 +24,7 @@
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
                     <span>任务列表</span>
-                    <el-button style="float: right; padding: 3px 0" type="text" @click.native.prevent="addTask()"> 新增
+                    <el-button style="float: right; padding: 3px 0" type="text" v-permiss="'/addTask.json'" @click.native.prevent="addTask()"> 新增
                     </el-button>
                 </div>
 
@@ -82,24 +82,28 @@
                             width="120">
                         <template slot-scope="scope">
                             <el-button
+                                    v-permiss="'/delTask.json'"
                                     @click.native.prevent="delTask(scope.row.id)"
                                     type="text"
                                     size="small">
                                 移除
                             </el-button>
                             <el-button
+                                    v-permiss="'/taskDetail.json'"
                                     @click.native.prevent="editorTask(scope.row.id)"
                                     type="text"
                                     size="small">
                                 编辑
                             </el-button>
                             <el-button
+                                    v-permiss="'/startTask.json'"
                                     @click.native.prevent="startTask(scope.row.id)"
                                     type="text"
                                     size="small">
                                 执行任务
                             </el-button>
                             <el-button
+                                    v-permiss="'/performTaskList.json'"
                                     @click.native.prevent="historyTask(scope.row)"
                                     type="text"
                                     size="small">
@@ -157,6 +161,7 @@
     methods: {
       init() {
         this.$store.dispatch('taskList')
+        this.$store.dispatch('permissList')
       },
       delTask(id) {
         this.$confirm('此操作将永久删除该任务, 是否继续?', '提示', {

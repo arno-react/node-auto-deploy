@@ -39,7 +39,8 @@ module.exports = {
   plugins: [
     '@/plugins/element-ui',
     '@/plugins/socket',
-    '@/plugins/icons'
+    '@/plugins/icons',
+    '@/plugins/directive'
   ],
 
   /*

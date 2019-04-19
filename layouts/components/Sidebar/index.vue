@@ -52,7 +52,7 @@ export default {
           id: 0
         }
       ]
-      return constantRouter
+      return menuList
     },
     isCollapse() {
       return !this.sidebar.opened

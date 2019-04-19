@@ -70,10 +70,15 @@
 export default {
   data() {
     return {
-      userName: this.$store.getters.userInfo ? this.$store.getters.userInfo.name : ''
+
     }
   },
   mounted() {
+  },
+  computed: {
+    userName() {
+      return  this.$store.state.user.name
+    }
   },
   methods: {
     setDialogInfo(val) {

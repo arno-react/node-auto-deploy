@@ -3,6 +3,8 @@
  */
 var userModel = require('../model/user')
 var Token = require('../util/token');
+var permissionsModel = require('../model/permissions');
+let permissionsList = []
 module.exports = {
   checkUserName: async function (req, res, next) {
     var name =  req.body.username
@@ -82,11 +84,27 @@ module.exports = {
         delete data.pwd
         let token = Token.createToken(data, 60*60*24)
         data.token = token
+        let userPer = JSON.parse(data.content)
+        let menuResList = []
+        if (!permissionsList.length) {
+          permissionsList = await permissionsModel.listAndType(0)
+        }
+        permissionsList.forEach(item => {
+          if (userPer.indexOf(item.id) !== -1){
+            menuResList.push ({
+              title: item.title,
+              path: item.api,
+              icon: '',
+              id: 0
+            })
+          }
+        })
+
         res.json({
           code: 1,
           data: {
             user:data,
-            menuResList: []
+            menuResList: menuResList
           }
         });
         return

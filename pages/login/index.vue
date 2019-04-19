@@ -76,6 +76,9 @@ export default {
       immediate: true
     }
   },
+  mounted() {
+    this.$store.dispatch('permissList')
+  },
   methods: {
     showPwd() {
       if (this.pwdType === 'password') {

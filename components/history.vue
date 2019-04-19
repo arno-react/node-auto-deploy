@@ -39,6 +39,7 @@
                     <template slot-scope="scope">
 
                         <el-button
+                                v-permiss="'/performTaskDetail.json'"
                                 @click.native.prevent="seeTask(scope.row.id)"
                                 type="text"
                                 size="small">
