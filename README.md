@@ -3,7 +3,7 @@
 > node auto deploy  项目使用 Nuxt  express  element 
 
 
-
+> [测试地址 http://118.24.156.247:3000/](http://118.24.156.247:3000/)   用户/密码  admin/123456
 
 ### 安装
 -   程序需要ssh 要用 password 登录  要装sshpass
@@ -41,8 +41,11 @@ For detailed explanation on how things work, checkout [Nuxt.js docs](https://nux
 
 -   使用pm2为项目守护启动 
 ``` bash
+# 安装pm2
 $ npm install pm2 -g 
-
+# 启动
 $ pm2 start npm --name "autodeploy" -- run start
+# 重新启动
+$ pm2 restart  autodeploy
 
 ```
