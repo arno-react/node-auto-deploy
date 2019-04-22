@@ -49,3 +49,12 @@ $ pm2 start npm --name "autodeploy" -- run start
 $ pm2 restart  autodeploy
 
 ```
+
+##### 开发功能
+
+- [x] 核心功能自动部署
+- [x] 用户权限
+- [ ] 定时任务
+- [ ] 支持SVN
+
+##### [项目目录结构](./tree.md)
