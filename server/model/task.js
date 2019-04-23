@@ -14,7 +14,7 @@ module.exports = {
   },
   add: function (data) {
     return new Promise((resolve, reject) => {
-      pool.query(taskSqlMap.add, [data.num, data.pid, data.start_uid, data.store_url, data.cmd, data.status, "[]", data.workspace], function (error, result) {
+      pool.query(taskSqlMap.add, [data.num, data.pid, data.start_uid, data.store_url, data.cmd, data.status, "{}", data.workspace], function (error, result) {
         if (error) reject(error);
         resolve(result);
       });
@@ -68,14 +68,20 @@ module.exports = {
     })
   },
   updateStatusAndLog: async function (data) {
-    // var res = await this.getById(data.id)
-    // let log = data.log
-    // if(res.log){
-    //   log = JSON.parse(res.log)
-    // }
-    // log.push(data.log)
+    var res = await this.getById(data.id)
+    let logObj = res.log
+    if(logObj){
+      logObj = JSON.parse(logObj)
+    }else{
+      logObj = {}
+    }
+    if (logObj.log){
+      logObj.log.push(data.log)
+    }else{
+      logObj.log = [data.log]
+    }
     return new Promise((resolve, reject) => {
-      pool.query(taskSqlMap.updateStatusAndLog, [JSON.stringify(data.log),data.status,data.id], function (error, result) {
+      pool.query(taskSqlMap.updateStatusAndLog, [JSON.stringify(logObj),data.status,data.id], function (error, result) {
         if (error) reject(error);
         resolve(result.affectedRows > 0);
       });

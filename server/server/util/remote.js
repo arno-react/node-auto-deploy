@@ -13,33 +13,42 @@ module.exports = {
     })
   },
   async copyToRemote (src, dest, options){
-    logger.info('scp  "%s" to "%s" start', src,dest );
-    var res = await connection.copyToRemote(src, dest, options).catch(({stderr, stdout}) => {
-      logger.error(stderr)
-      console.error(stderr)
-    });
-    logger.info('scp  "%s" to "%s" end', src,dest );
-    return res
+    return new Promise(async (resolve, reject) => {
+      logger.info('scp  "%s" to "%s" start', src, dest);
+      var res = await connection.copyToRemote(src, dest, options).catch(({stderr, stdout}) => {
+        logger.error(stderr)
+        console.error(stderr)
+        reject(stderr)
+      });
+      logger.info('scp  "%s" to "%s" end', src, dest);
+      resolve(res)
+    })
   },
   async copyFromRemote (src, dest, options){
-    logger.info('scp  "%s" to "%s" start', src,dest );
-    var res = await connection.copyFromRemote(dest, src, options).catch(({stderr, stdout}) => {
-      logger.error(stderr)
-      console.error(stderr)
-    });
-    logger.info('scp  "%s" to "%s" end', src,dest );
-    return res
+    return new Promise(async (resolve, reject) => {
+      logger.info('scp  "%s" to "%s" start', src, dest);
+      var res = await connection.copyFromRemote(dest, src, options).catch(({stderr, stdout}) => {
+        logger.error(stderr)
+        console.error(stderr)
+        reject(stderr)
+      });
+      logger.info('scp  "%s" to "%s" end', src, dest);
+      resolve(res)
+    })
   },
   async run (cmd, workspace){
-    logger.info('run  "%s"  workspace "%s" start',cmd, workspace );
-    var res = await connection.run(cmd, {
-      cwd: workspace
-    }).catch(({stderr, stdout}) => {
-      logger.error(stderr)
-      console.error(stderr)
-    });
-    logger.info('run  "%s"  workspace "%s"  end',cmd, workspace  );
-    return res
+    return new Promise( async (resolve, reject) => {
+      logger.info('run  "%s"  workspace "%s" start', cmd, workspace);
+      var res = await connection.run(cmd, {
+        cwd: workspace
+      }).catch(({stderr, stdout}) => {
+        logger.error(stderr)
+        console.error(stderr)
+        reject(stderr)
+      });
+      logger.info('run  "%s"  workspace "%s"  end', cmd, workspace);
+      resolve(res)
+    })
   }
 
 }

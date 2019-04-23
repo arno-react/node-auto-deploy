@@ -221,6 +221,7 @@ var obj = {
       })
       .catch(async (err) => {
         console.log('error',addTaskRes.insertId,'task done')
+        console.log('error',err)
         await taskModel.updateStatusAndLog({
           log: err,
           status: 1,
