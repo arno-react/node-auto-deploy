@@ -28,7 +28,7 @@ module.exports = {
   },
   addRemote(workspace, repositoryUrl, userName, password) {
     return new Promise((resolve, reject) => {
-      logger.info('List local remotes.');
+      logger.info('List local remotes. %s',workspace);
       exec('git remote', {
         cwd: workspace
       }).then((res) => {

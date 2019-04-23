@@ -6,6 +6,7 @@ var routes = require('./routes/index');
 var log4js = require("./plugins/log4j");
 var bodyParser = require('body-parser');
 const app = express()
+log4js.configure()
 app.use(log4js.useLog());
 app.use(bodyParser.json());  //body-parser 解析json格式数据
 routes(app)
