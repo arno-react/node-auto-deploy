@@ -64,7 +64,7 @@ var obj = {
     var dataParams = {
       title: body.title,
       des: body.des,
-      uid: 0,
+      uid: req.userObj.uid,
       store_url: body.store_url,
       store_type: body.store_type,
       branch: body.branch,
@@ -180,6 +180,7 @@ var obj = {
     let addTaskObj = {
       num: taskObjRes.num + 1,
       pid: taskObjRes.id,
+      start_uid: req.userObj.uid,
       store_url: taskObjRes.store_url,
       cmd: taskObjRes.content,
       workspace: taskObjRes.workspace,
@@ -248,7 +249,7 @@ var obj = {
       return
     }
     socket.getWSbyTaskId(id).emit('onClose', {id})
-    await taskModel.updateStopUid({uid:0, id:id})
+    await taskModel.updateStopUid({uid:req.userObj.uid, id:id})
     res.json({
       code: 1,
       data:{}

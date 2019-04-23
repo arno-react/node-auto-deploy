@@ -2,12 +2,7 @@ var sshPool = require('../ssh-pool/index')
 var logger = require("./log4j");
 
 var tmp = require('tmp');
-// var Connection  = sshPool.Connection
-// const connection = new Connection({
-//   remote: 'root@118.24.156.247:22',
-//   password:'xiao@chen100200',
-//   log: (...args) => console.log(...args),
-// })
+
 var exec = sshPool.exec
 
 

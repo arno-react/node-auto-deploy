@@ -10,7 +10,7 @@
                         width="150">
                 </el-table-column>
                 <el-table-column
-                        prop="start_uid"
+                        prop="uname"
                         label="执行任务用户"
                         width="120">
                 </el-table-column>

@@ -26,6 +26,7 @@ module.exports = function(app){
          })
        }
        if (userPer.indexOf(permissionsObj[req.path]) !== -1){
+         req.userObj = userObj.payload.data
          next()
        } else {
          res.json({

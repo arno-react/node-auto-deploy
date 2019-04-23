@@ -14,7 +14,7 @@ module.exports = {
   },
   add: function (data) {
     return new Promise((resolve, reject) => {
-      pool.query(taskSqlMap.add, [data.num, data.pid, data.store_url, data.cmd, data.status, "[]", data.workspace], function (error, result) {
+      pool.query(taskSqlMap.add, [data.num, data.pid, data.start_uid, data.store_url, data.cmd, data.status, "[]", data.workspace], function (error, result) {
         if (error) reject(error);
         resolve(result);
       });
